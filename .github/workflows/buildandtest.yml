@@ -5,6 +5,7 @@ on:
     workflows: [pull_check]
     types:
       - completed
+      - in_progress
 jobs:
   job_test:
     name: Test
