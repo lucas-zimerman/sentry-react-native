@@ -2,7 +2,7 @@ name: Build & Test
 
 on:
   workflow_run:
-    workflows: 'Skip CI'
+    workflows: [SkipCI]
     types:
       - completed
 jobs:

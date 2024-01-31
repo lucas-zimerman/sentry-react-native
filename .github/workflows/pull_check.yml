@@ -1,4 +1,4 @@
-name: Skip CI
+name: SkipCI
 on:
   push:
     branches:
