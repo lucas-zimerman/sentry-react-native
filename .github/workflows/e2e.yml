@@ -1,8 +1,10 @@
 name: End-to-End Tests
 
 on:
-  workflow_call:
-
+  workflow_run:
+    workflows: [Skip CI]
+    types:
+      - completed
 env:
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
