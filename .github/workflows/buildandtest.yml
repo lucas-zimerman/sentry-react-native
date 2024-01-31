@@ -7,6 +7,7 @@ jobs:
   job_run_ci:
     name: Run
     if: false
+    runs-on: ubuntu-latest
     steps:
       - name: Run
         run: exit 0
