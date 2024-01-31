@@ -2,7 +2,7 @@ name: End-to-End Tests
 
 on:
   workflow_run:
-    workflows: [Skip CI]
+    workflows: [Danger]
     types:
       - completed
 env:
