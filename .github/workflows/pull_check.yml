@@ -30,18 +30,18 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Build and Test
       - uses: actions/checkout@v2
+      - name: Build and Test
         uses: './.github/workflows/buildandtest.yml'
   codehq:
     runs-on: ubuntu-latest
     steps:
-      - name: CodeQl analysis
       - uses: actions/checkout@v2
+      - name: CodeQl analysis
         uses: './.github/workflows/codeql-analysis.yml'
   e2e:
     runs-on: ubuntu-latest
     steps:
-      - name: End to End
       - uses: actions/checkout@v2
+      - name: End to End
         uses: './.github/workflows/e2e.yml'
