@@ -5,6 +5,8 @@ on:
     workflows: [Danger]
     types:
       - completed
+    branches:
+      - '**'
 env:
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 

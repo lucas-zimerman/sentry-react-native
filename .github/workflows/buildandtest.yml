@@ -1,14 +1,18 @@
 name: Build & Test
 
 on:
-  workflow_run:
-    workflows: [pull_check]
-    types:
-      - completed
-      - in_progress
+  push:
+  pull_request:
 jobs:
+  job_run_ci:
+    name: Run
+    if: false
+    steps:
+      - name: Run
+        run: exit 0
   job_test:
     name: Test
+    needs: [job_run_ci]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,6 +32,7 @@ jobs:
 
   job_lint:
     name: Lint
+    needs: [job_run_ci]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -44,6 +49,7 @@ jobs:
 
   job_lint_sample_new_arch:
     name: Lint Sample
+    needs: [job_run_ci]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -62,6 +68,7 @@ jobs:
 
   job_check_integrity:
     name: Check package integrity
+    needs: [job_run_ci]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -80,6 +87,7 @@ jobs:
 
   job_build:
     name: Build
+    needs: [job_run_ci]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
