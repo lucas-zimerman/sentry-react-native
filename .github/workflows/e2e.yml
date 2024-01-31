@@ -1,9 +1,7 @@
 name: End-to-End Tests
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  workflow_call:
 
 env:
   SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}

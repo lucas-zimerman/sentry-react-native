@@ -1,7 +1,19 @@
 name: Skip CI
 on:
-  workflow_call:
   push:
+    branches:
+      - main
+      - release/**
+    paths-ignore:
+      - '.prettierignore'
+      - 'CHANGELOG.md'
+      - 'README.md'
+      - '.github/CODEOWNERS'
+      - '.github/pull_request_template.md'
+      - '.github/ISSUE_TEMPLATE/BUG_REPORT.md'
+      - '.github/ISSUE_TEMPLATE/FEATURE_REQUEST.md'
+      - '.github/workflows/**.yml' #for testing
+  pull_request:
     paths-ignore:
       - '.prettierignore'
       - 'CHANGELOG.md'
@@ -13,8 +25,23 @@ on:
       - '.github/workflows/**.yml' #for testing
 
 jobs:
-  check-ci:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Do Nothing
-        run: exit 0
+      - name: Build and Test
+        uses: './.github/workflows/buildandtest.yml'
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and Test
+        uses: './.github/workflows/buildandtest.yml'
+  codehq:
+    runs-on: ubuntu-latest
+    steps:
+      - name: CodeQl analysis
+        uses: './.github/workflows/codeql-analysis.yml'
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: End to End
+        uses: './.github/workflows/e2e.yml'
