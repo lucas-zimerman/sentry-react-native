@@ -10,7 +10,7 @@ on:
 jobs:
   check_ci:
     name: Check CI
-    uses: '.github/workflows/pull_check.yml'
+    uses: './.github/workflows/pull_check.yml'
   job_test:
     name: Test
     runs-on: ubuntu-latest
