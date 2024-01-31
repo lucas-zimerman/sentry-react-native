@@ -30,5 +30,4 @@ jobs:
   has_changes:
     runs-on: ubuntu-latest
     steps:
-      - name: Has Changes
-        run: echo "Commit has code changes."
+       -uses: actions/checkout@v2
