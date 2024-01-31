@@ -30,11 +30,6 @@ jobs:
     steps:
       - name: Build and Test
         uses: './.github/workflows/buildandtest.yml'
-  build-and-test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build and Test
-        uses: './.github/workflows/buildandtest.yml'
   codehq:
     runs-on: ubuntu-latest
     steps:
