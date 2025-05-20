@@ -1,115 +1,65 @@
 {
-  "name": "@sentry/react-native",
-  "homepage": "https://github.com/getsentry/sentry-react-native",
-  "repository": "https://github.com/getsentry/sentry-react-native",
-  "version": "3.2.9",
-  "description": "Official Sentry SDK for react-native",
-  "typings": "dist/js/index.d.ts",
-  "types": "dist/js/index.d.ts",
-  "typescript": {
-    "definition": "dist/js/index.d.ts"
-  },
-  "main": "dist/js/index.js",
+  "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "build:watch": "tsc -p tsconfig.build.json -w --preserveWatchOutput",
-    "clean": "rimraf dist coverage",
-    "test": "jest",
-    "lint": "eslint .",
-    "test:watch": "jest --watch",
-    "run-ios": "cd sample && yarn react-native run-ios",
-    "run-android": "cd sample && yarn react-native run-android"
-  },
-  "keywords": [
-    "react-native",
-    "sentry",
-    "crashreporting",
-    "ios"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "author": "Sentry",
-  "license": "MIT",
-  "//": [
-    "React version to be compatible with RN",
-    "When bumping make sure to update the version of react, i.e:  https://github.com/facebook/react-native/blob/v0.56.0/package.json"
-  ],
-  "peerDependencies": {
-    "react": ">=16.4.1",
-    "react-native": ">=0.56.0"
-  },
-  "dependencies": {
-    "@sentry/browser": "6.12.0",
-    "@sentry/cli": "^1.68.0",
-    "@sentry/core": "6.12.0",
-    "@sentry/hub": "6.12.0",
-    "@sentry/integrations": "6.12.0",
-    "@sentry/react": "6.12.0",
-    "@sentry/tracing": "6.12.0",
-    "@sentry/types": "6.12.0",
-    "@sentry/utils": "6.12.0"
+    "build": "lerna run build",
+    "build:tarball": "lerna run build:tarball",
+    "downlevel": "lerna run downlevel",
+    "clean": "lerna run clean",
+    "circularDepCheck": "lerna run circularDepCheck",
+    "test": "lerna run test",
+    "fix": "run-s fix:lerna fix:android fix:clang fix:swift fix:kotlin",
+    "fix:lerna": "lerna run fix",
+    "fix:android": "run-s 'java:format fix' java:pmd",
+    "fix:clang": "run-s 'clang:format fix'",
+    "fix:swift": "run-s 'swift:lint fix'",
+    "fix:kotlin": "npx ktlint --relative --format '!**/node_modules/**'",
+    "lint": "run-s lint:lerna lint:android lint:clang lint:swift lint:kotlin",
+    "lint:lerna": "lerna run lint",
+    "lint:android": "run-s 'java:format lint' java:pmd",
+    "lint:clang": "run-s 'clang:format lint'",
+    "lint:swift": "run-s 'swift:lint lint'",
+    "lint:kotlin": "npx ktlint --relative '!**/node_modules/**'",
+    "java:format": "./scripts/google-java-format.sh",
+    "java:pmd": "./scripts/pmd.sh",
+    "clang:format": "./scripts/clang-format.sh",
+    "swift:lint": "./scripts/swiftlint.sh",
+    "run-ios": "cd samples/react-native && yarn react-native run-ios",
+    "run-android": "cd samples/react-native && yarn react-native run-android",
+    "set-version-samples": "lerna run set-version"
   },
   "devDependencies": {
-    "@sentry-internal/eslint-config-sdk": "6.12.0",
-    "@sentry-internal/eslint-plugin-sdk": "6.12.0",
-    "@sentry/typescript": "^5.20.0",
-    "@sentry/wizard": "^1.2.15",
-    "@types/jest": "^26.0.15",
-    "@types/react": "^16.9.49",
-    "@types/react-native": "^0.65.3",
-    "babel-jest": "^26.1.0",
-    "eslint": "^7.6.0",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-native": "^3.8.1",
-    "jest": "^24.9.0",
+    "@expo/swiftlint": "^0.57.1",
+    "@naturalcycles/ktlint": "^1.13.0",
+    "@sentry/cli": "2.45.0",
+    "clang-format": "^1.8.0",
+    "downlevel-dts": "^0.11.0",
+    "google-java-format": "^1.4.0",
+    "lerna": "^8.1.8",
+    "npm-run-all2": "^6.2.2",
+    "pmd-bin": "^2.5.0",
     "prettier": "^2.0.5",
-    "react": ">=16.4.1",
-    "react-native": ">=0.56.0",
-    "replace-in-file": "^6.0.0",
-    "rimraf": "^3.0.0",
-    "ts-jest": "^24.3.0",
-    "typescript": "^3.4.5"
+    "react-native-version": "^4.0.0",
+    "replace-in-file": "^7.0.1"
   },
-  "rnpm": {
-    "commands": {
-      "postlink": "node node_modules/@sentry/wizard/dist/bin.js -i reactNative -p ios android",
-      "postunlink": "node node_modules/@sentry/wizard/dist/bin.js -i reactNative -p ios android --uninstall"
-    },
-    "android": {
-      "packageInstance": "new RNSentryPackage()"
-    },
-    "ios": {
-      "sharedLibraries": [
-        "libz"
-      ]
-    }
+  "workspaces": [
+    "packages/core",
+    "dev-packages/e2e-tests",
+    "dev-packages/type-check",
+    "dev-packages/utils",
+    "samples/react-native",
+    "samples/react-native-macos",
+    "samples/expo",
+    "performance-tests/TestAppPlain",
+    "performance-tests/TestAppSentry"
+  ],
+  "//": [
+    "Appium has a dependency on @xmldom/xmldom@^0.x, which causes chromedrive build to fail yarn install",
+    "See: https://github.com/appium/appium-chromedriver/pull/424"
+  ],
+  "resolutions": {
+    "appium-chromedriver@npm:5.6.73/@xmldom/xmldom": "0.8.10"
   },
-  "jest": {
-    "collectCoverage": true,
-    "preset": "react-native",
-    "transform": {
-      "^.+\\.(tsx)$": "<rootDir>/node_modules/react-native/jest/preprocessor.js",
-      "^.+\\.(ts|tsx)$": "ts-jest"
-    },
-    "globals": {
-      "__DEV__": true,
-      "ts-jest": {
-        "tsConfig": "./tsconfig.json",
-        "diagnostics": false
-      }
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/sample/"
-    ],
-    "testEnvironment": "node",
-    "testMatch": [
-      "**/*.test.(ts|tsx)"
-    ]
-  }
+  "version": "0.0.0",
+  "name": "sentry-react-native",
+  "packageManager": "yarn@3.6.4+sha512.e70835d4d6d62c07be76b3c1529cb640c7443f0fe434ef4b6478a5a399218cbaf1511b396b3c56eb03bc86424cff2320f6167ad2fde273aa0df6e60b7754029f"
 }
